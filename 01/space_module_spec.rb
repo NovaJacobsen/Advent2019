@@ -9,4 +9,10 @@ describe SpaceModule do
     expect(SpaceModule.new(1969).fuel_cost).to eq 654
     expect(SpaceModule.new(100756).fuel_cost).to eq 33583
   end
+
+  it 'has a fuel total, which includes fuel for the fuel' do
+    expect(SpaceModule.new(14).fuel_total).to eq 2
+    expect(SpaceModule.new(1969).fuel_total).to eq 966
+    expect(SpaceModule.new(100756).fuel_total).to eq 50346
+  end
 end
