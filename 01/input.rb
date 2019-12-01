@@ -1,4 +1,4 @@
-input = <<EOF.chomp.each_line.map(&:to_i)
+@input = <<EOF.chomp.each_line.map(&:to_i)
 137569
 146535
 74662
