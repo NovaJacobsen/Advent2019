@@ -39,6 +39,19 @@ describe Computer do
     ]
   end
 
+  it('can run multiple times') do
+    computer = Computer.new(
+      1,0,0,0,
+      99
+    )
+    computer.final_state
+    computer.write(2, to: 2)
+    expect(computer.final_state).to eq [
+      3,0,2,0,
+      99
+    ]
+  end
+
   it('raises an error if reaching an invalid opcode') do
     computer = Computer.new(4,4,4,4)
     expect {computer.final_state}.to raise_error StandardError

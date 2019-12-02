@@ -3,8 +3,8 @@ class Computer
   attr_accessor :program
 
   def initialize(*program)
-    @program = program.dup
-    @pc = 0
+    @original_program = program
+    reset
   end
 
   def final_state
@@ -25,6 +25,8 @@ class Computer
       end
     end
     program
+  ensure
+    reset
   end
 
   def opcode
@@ -41,6 +43,11 @@ class Computer
 
   def write(value, to:)
     @program[to] = value
+  end
+
+  def reset
+    @program = @original_program.dup
+    @pc = 0
   end
 
 end
