@@ -44,4 +44,12 @@ describe Wire do
     expect(a.intersections(b)).to match_array [Pos.new(2,2)]
   end
 
+  it 'knows how long it takes to reach a certain pos' do
+    wire = Wire.new('R2,D2')
+    expect(wire.timing(Pos.new(1,0))).to eq 1
+    expect(wire.timing(Pos.new(2,0))).to eq 2
+    expect(wire.timing(Pos.new(2,1))).to eq 3
+    expect(wire.timing(Pos.new(2,2))).to eq 4
+  end
+
 end

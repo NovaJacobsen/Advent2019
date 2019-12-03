@@ -3,6 +3,7 @@ class Wire
   def initialize(instructions)
     @positions = {}
     x,y = 0,0
+    steps = 0
     instructions.split(',').each do |step|
       repeats = step[1..-1].to_i
       repeats.times do
@@ -18,13 +19,18 @@ class Wire
         else
           raise "Invalid direction #{step[0,1]}"
         end
-        @positions[Pos.new(x,y)] = true
+        steps +=1
+        @positions[Pos.new(x,y)] ||= steps
       end
     end
   end
 
   def over?(pos)
     !!@positions[pos]
+  end
+
+  def timing(pos)
+    @positions.fetch(pos)
   end
 
   def intersections(other)
