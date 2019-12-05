@@ -1,37 +1,48 @@
-module Day02
+$LOAD_PATH.unshift(File.expand_path("..", __FILE__))
+
+require 'opcode'
+
+module Star05
   class Computer
 
-    attr_accessor :program
+    attr_accessor :program, :input, :output
 
-    def initialize(*program)
+    def initialize(*program, input: [], output: [])
       @original_program = program
+      @input = input
+      @output = output
       reset
     end
 
-    def final_state
-      until opcode == 99 do
+    def run
+      until opcode === Abort.new do
         case opcode
-        when 1
+        when Add
           a = read operand(1)
           b = read operand(2)
           write(a+b, to: operand(3))
           @pc += 4
-        when 2
+        when Mul
           a = read operand(1)
           b = read operand(2)
           write(a*b, to: operand(3))
           @pc += 4
+        when Read
+          write(@input.pop, to: operand(1))
+          @pc += 2
+        when Write
+          a = read operand(1)
+          @output.push a
+          @pc += 2
         else
-          raise "invalid opcode: #{opcode}"
+          raise "invalid opcode: #{opcode.inspect}"
         end
       end
-      program
-    ensure
-      reset
+      self
     end
 
     def opcode
-      operand 0
+      Opcode.for(@program[@pc])
     end
 
     def operand(number)
@@ -49,6 +60,7 @@ module Day02
     def reset
       @program = @original_program.dup
       @pc = 0
+      self
     end
 
   end
