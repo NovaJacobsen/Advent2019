@@ -3,15 +3,15 @@ module Day05
 
     attr_accessor :program, :input, :output
 
-    def initialize(*program, input: [], output: [])
+    def initialize(*program, input: [])
       @original_program = program
-      @input = input
-      @output = output
+      @original_input = input
       reset
     end
 
     def run
       loop do
+        o = nil
         case opcode
         when 99
           return self
@@ -27,7 +27,25 @@ module Day05
         when 4
           inst_size = 2
           @output.push operand(1)
-          o = nil
+        when 5
+          operand(1) # => 1
+          operand(2)  # => 10
+          inst_size = 3
+          unless operand(1) == 0
+            @pc = operand(2)
+            next
+          end
+        when 6
+          inst_size = 3
+          next @pc = operand(2) if operand(1) == 0
+        when 7
+          inst_size = 4
+          o = 0
+          o = 1 if operand(1) < operand(2)
+        when 8
+          inst_size = 4
+          o = 0
+          o = 1 if operand(1) == operand(2)
         else
           raise "invalid opcode: #{opcode.inspect}"
         end
@@ -61,13 +79,17 @@ module Day05
 
     def write(value, to:)
       @program[to] = value
+      self
     end
 
     def reset
       @program = @original_program.dup
+      @input = @original_input.dup
+      @output = []
       @pc = 0
       self
     end
 
   end
+
 end

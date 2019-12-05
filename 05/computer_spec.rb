@@ -52,6 +52,54 @@ module Day05
       expect(computer.output).to eq [85]
     end
 
+    it 'can jump if true using opcode 5' do
+      computer = Computer.new(
+        1105, 1, 10, 99,
+        84,85,86,87,88,89,
+        4, 6,
+        99
+      ).run
+      expect(computer.output).to eq [86]
+      computer.reset.write(0, to: 1).run
+      expect(computer.output).to be_empty
+    end
+
+    it 'can jump if false using opcode 6' do
+      computer = Computer.new(
+        1106, 1, 10, 99,
+        84,85,86,87,88,89,
+        4, 6,
+        99
+      ).run
+      expect(computer.output).to be_empty
+      computer.reset.write(0, to: 1).run
+      expect(computer.output).to eq [86]
+    end
+
+    it 'can produce less than using opcode 7' do
+      computer = Computer.new(
+        1107, -2, 3, 0,
+        99
+      ).run
+      expect(computer.program.first).to eq 1
+      computer.reset.write(3, to: 1).run
+      expect(computer.program.first).to eq 0
+      computer.reset.write(5, to: 1).run
+      expect(computer.program.first).to eq 0
+    end
+
+    it 'can produce less than using opcode 8' do
+      computer = Computer.new(
+        1108, -2, 3, 0,
+        99
+      ).run
+      expect(computer.program.first).to eq 0
+      computer.reset.write(3, to: 1).run
+      expect(computer.program.first).to eq 1
+      computer.reset.write(5, to: 1).run
+      expect(computer.program.first).to eq 0
+    end
+
     it 'can read in immediate mode' do
       computer = Computer.new(
         1102, 7, 17, 0,
