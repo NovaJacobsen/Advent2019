@@ -28,5 +28,12 @@ describe OrbitMap do
         expect(example_map.total_distance_to_com).to eq 42
       end
     end
+
+    describe '#highest_common_orbit' do
+      it 'returns the object at the highest distance from COM both params orbit' do
+        expect(example_map.highest_common_orbit('K', 'I')).to eq 'D'
+      end
+    end
+
   end
 end
