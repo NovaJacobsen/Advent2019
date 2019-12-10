@@ -28,6 +28,20 @@ EOF
       asteroid = {x: 3, y: 4}
       expect(map.visible_asteroids(asteroid).size).to eq 8
     end
+
+    it 'returns visible asteroids in scan order' do
+      map = StarMap.new(<<EOF.chomp)
+####
+####
+####
+EOF
+      expect(map.visible_asteroids({x:1, y:1})).to eq [
+        {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0},
+        {x: 2, y: 1}, {x: 3, y: 2}, {x: 2, y: 2},
+        {x: 1, y: 2}, {x: 0, y: 2}, {x: 0, y: 1},
+        {x: 0, y: 0}
+      ]
+    end
   end
 end
 
