@@ -1,9 +1,9 @@
 module Day11
   class PaintBot
     attr_reader :x, :y, :facing
-    def initialize(computer)
+    def initialize(computer, initial: {})
       @x, @y = 0, 0
-      @painting = {}
+      @painting = initial
       @facing = Up
 
       computer.output = self
@@ -12,8 +12,22 @@ module Day11
       computer.run
     end
 
-    def pop
+    def render
+      xs = @painting.keys.map { |hash| hash[:x] }
+      ys = @painting.keys.map { |hash| hash[:y] }
+      (ys.min..ys.max).map do |y|
+        (xs.min..xs.max).map do |x|
+          get(x, y)== 0 ? ' ' : '#'
+        end.join
+      end
+    end
+
+    def get(x, y)
       @painting[{x: x, y: y}] || 0
+    end
+
+    def pop
+      get(x, y)
     end
 
     def push(val)

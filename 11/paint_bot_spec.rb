@@ -88,5 +88,21 @@ module Day11
       expect(bot.painted_tiles).to eq 4
       expect(computer.program.first(5)).to eq [0,0,0,0,1]
     end
+
+    it 'can render the painting it draws' do
+      bot = PaintBot.new(computer_mock, initial: {{x: 0, y: 0} => 1})
+      4.times do
+        bot.move 0
+        bot.move 1
+        bot.paint 1
+      end
+      expect(bot.render).to eq [
+        '#    ',
+        ' #   ',
+        '  #  ',
+        '   # ',
+        '    #'
+      ]
+    end
   end
 end
