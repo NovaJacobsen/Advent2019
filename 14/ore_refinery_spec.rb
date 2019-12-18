@@ -22,8 +22,8 @@ module Day14
         '5 ORE => 2 FUEL'
         ])
 
-      refinery.generate_fuel 1
-      expect(refinery.ore_cost).to eq 5
+      expect(refinery.cost_of_fuel(1)).to eq 5
+      expect(refinery.cost_of_fuel(2)).to eq 5
     end
 
     it 'can use leftovers from a previous reaction' do
@@ -36,6 +36,16 @@ module Day14
       refinery.generate_fuel 1 # in stock
       refinery.generate_fuel 1 # costs 5 and leaves 4 A
       expect(refinery.ore_cost).to eq 18
+    end
+
+    it 'can make fuel to an ore limit' do
+      refinery = OreRefinery.new([
+        '5 ORE 1 A => 2 FUEL', # R1
+        '10 ORE => 2 A'        # R2
+        ])
+    
+      expect(refinery.max_fuel(limit: 1000)).to eq 200
+      # 4 fuel every 20 ore => 50*4
     end
   end
 end
