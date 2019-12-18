@@ -44,5 +44,27 @@ module Day12
       expect(moons[3].energy).to eq 18
       expect(moons.energy).to eq 179
     end
+
+    it 'can count the number of steps before repeating' do
+      moons = Moons.new([
+        '<x=-1, y=0, z=2>',
+        '<x=2, y=-10, z=-7>',
+        '<x=4, y=-8, z=8>',
+        '<x=3, y=5, z=-1>'
+      ])
+
+      expect(moons.repeat_time).to eq 2772
+    end
+
+    it 'performs well even for very long repeats' do
+      moons = Moons.new([
+        '<x=-8, y=-10, z=0>',
+        '<x=5, y=5, z=10>',
+        '<x=2, y=-7, z=3>',
+        '<x=9, y=-8, z=-3>'
+      ])
+
+      expect(moons.repeat_time).to eq 4_686_774_924
+    end
   end
 end

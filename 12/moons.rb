@@ -5,6 +5,9 @@ module Day12
       @moons = lines.map do |line|
         Moon.for line
       end
+      @known_states = []
+      @current_step = 0
+      save_state
     end
 
     def []index
@@ -22,12 +25,44 @@ module Day12
           a.vz -=1 if b.z < a.z
         end
         @moons.each(&:move)
+        @current_step += 1
+        save_state
       end
     end
 
     def energy
       @moons.sum(&:energy)
     end
+
+    def repeat_time
+      generate_repeat_data
+      @xr.lcm(@yr).lcm(@zr)
+    end
+
+    def generate_repeat_data
+      until @xr && @yr && @zr do
+        step
+        @xr ||= @current_step if current_state[:x] == @known_states.first[:x] && current_state[:vx] == @known_states.first[:vx]
+        @yr ||= @current_step if current_state[:y] == @known_states.first[:y] && current_state[:vy] == @known_states.first[:vy]
+        @zr ||= @current_step if current_state[:z] == @known_states.first[:z] && current_state[:vz] == @known_states.first[:vz]
+      end
+    end
+
+    def save_state
+      @known_states[@current_step] = current_state
+    end
+
+    def current_state
+    {
+        x: @moons.map(&:x), 
+        y: @moons.map(&:y), 
+        z: @moons.map(&:z), 
+        vx: @moons.map(&:vx), 
+        vy: @moons.map(&:vy), 
+        vz: @moons.map(&:vz) 
+      }
+    end
+
   end
 
   class Moon
